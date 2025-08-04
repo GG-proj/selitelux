@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>S Elite Lux</title>
   <style>
     body {
@@ -18,86 +18,91 @@
       min-height: 100vh;
       text-align: center;
     }
-
     img.logo {
       max-width: 200px;
       margin-bottom: 30px;
     }
-
     h1 {
       font-size: 2rem;
       letter-spacing: 0.1em;
     }
-
     p {
       max-width: 600px;
       margin: 0 auto 20px;
       line-height: 1.6;
     }
-
     .email {
       color: #ffffff;
       font-weight: bold;
     }
-
     footer {
       margin-top: 40px;
       font-size: 0.85rem;
       color: #888;
     }
-
+    /* Link "you" cliccabile senza stile visibile */
     .secret-link {
+      cursor: pointer;
       color: inherit;
       text-decoration: none;
-      cursor: pointer;
+    }
+    .secret-link:focus, .secret-link:hover {
+      text-decoration: none;
+      outline: none;
+      color: inherit;
     }
 
-    /* Modal */
-    .modal {
-      display: none;
+    /* Popup overlay */
+    #password-popup {
+      display: none; /* hidden by default */
       position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
       z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
-
-    .modal-content {
-      background-color: #1a1a1a;
-      padding: 30px;
-      border-radius: 8px;
+    #password-popup.active {
+      display: flex;
+    }
+    #password-popup-content {
+      background: #1a1a1a;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #000;
+      width: 320px;
       text-align: center;
-      box-shadow: 0 0 10px #000;
+      color: #f0f0f0;
+      font-size: 1rem;
+      position: relative;
     }
-
-    .modal-content input {
+    #password-popup-content input[type="password"] {
+      width: 100%;
       padding: 10px;
       margin-top: 15px;
       font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      width: 200px;
-    }
-
-    .modal-content button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #444;
-      color: white;
       border: none;
       border-radius: 5px;
-      cursor: pointer;
     }
-
-    .error {
+    #password-popup-content button {
+      margin-top: 20px;
+      background-color: #c59f35;
+      border: none;
+      padding: 10px 20px;
+      color: #0e0e0e;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    #password-popup-content button:hover {
+      background-color: #a47f1f;
+    }
+    #password-error {
       color: #ff4444;
-      margin-top: 10px;
+      margin-top: 15px;
+      font-weight: bold;
+      display: none;
     }
   </style>
 </head>
@@ -116,45 +121,65 @@
   <span class="email">partnership@selitelux.com</span></p>
 
   <p><strong>Membership is strictly by invitation.<br />
-  If we are interested in you, we will find <span class="secret-link" onclick="openModal()">you</span>.</strong></p>
+  If we are interested in 
+    you, we will find 
+    <span id="secretYou" class="secret-link">you</span>.
+  </strong></p>
 
   <footer>
     The official domain and platform are shared only with selected members.
   </footer>
 
-  <!-- Modal -->
-  <div id="passwordModal" class="modal">
-    <div class="modal-content">
-      <h3>Enter password</h3>
-      <input type="password" id="passwordInput" placeholder="Password" />
-      <br />
-      <button onclick="checkPassword()">Submit</button>
-      <p class="error" id="errorMessage" style="display:none;">ACCESS DENIED</p>
+  <!-- Password popup -->
+  <div id="password-popup">
+    <div id="password-popup-content">
+      <div>Enter Password</div>
+      <input type="password" id="password-input" autocomplete="off" />
+      <button id="password-submit">Submit</button>
+      <div id="password-error">ACCESS DENIED</div>
     </div>
   </div>
 
   <script>
-    function openModal() {
-      document.getElementById('passwordModal').style.display = 'flex';
-    }
+    const secretYou = document.getElementById('secretYou');
+    const popup = document.getElementById('password-popup');
+    const passwordInput = document.getElementById('password-input');
+    const passwordSubmit = document.getElementById('password-submit');
+    const passwordError = document.getElementById('password-error');
 
-    function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      if (input === 'ILLUMINATI1776') {
+    // Show popup on clicking second "you"
+    secretYou.addEventListener('click', () => {
+      passwordInput.value = '';
+      passwordError.style.display = 'none';
+      popup.classList.add('active');
+      passwordInput.focus();
+    });
+
+    // Close popup clicking outside content
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.classList.remove('active');
+      }
+    });
+
+    // Submit password
+    passwordSubmit.addEventListener('click', () => {
+      const password = passwordInput.value.trim();
+      if (password === 'ILLUMINATI1776') {
+        // Correct password: redirect to vault.html
         window.location.href = 'vault.html';
       } else {
-        document.getElementById('errorMessage').style.display = 'block';
+        // Wrong password: show error
+        passwordError.style.display = 'block';
       }
-    }
+    });
 
-    window.onclick = function(event) {
-      const modal = document.getElementById('passwordModal');
-      if (event.target === modal) {
-        modal.style.display = "none";
-        document.getElementById('errorMessage').style.display = 'none';
-        document.getElementById('passwordInput').value = '';
+    // Optional: Enter key submits
+    passwordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        passwordSubmit.click();
       }
-    }
+    });
   </script>
 </body>
 </html>
