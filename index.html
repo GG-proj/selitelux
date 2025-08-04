@@ -40,13 +40,37 @@
       font-size: 0.85rem;
       color: #888;
     }
-    a.secret {
+    .hidden-link {
       color: #f0f0f0;
-      text-decoration: underline dotted;
+      text-decoration: underline;
       cursor: pointer;
     }
-    .hidden {
+    .vault {
       display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .password-box {
+      margin-top: 20px;
+    }
+    .input {
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+    .button {
+      padding: 10px 20px;
+      background-color: #444;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+    .pdf-list a {
+      display: block;
+      margin: 10px 0;
+      color: #aaa;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -65,19 +89,62 @@
   <span class="email">partnership@selitelux.com</span></p>
 
   <p><strong>Membership is strictly by invitation.<br />
-  If we are interested in <a class="secret" onclick="requestPassword()">you</a>, we will find you.</strong></p>
+  If we are interested in <span class="hidden-link" onclick="showPasswordPrompt('step1')">you</span>.</strong></p>
 
   <footer>
     The official domain and platform are shared only with selected members.
   </footer>
 
+  <div class="vault" id="vault1">
+    <p>RESTRICTED AREA.<br />
+    IF YOU ARE A MEMBER, CONTACT YOUR LOCAL REPRESENTATIVE OR <span class="hidden-link" onclick="showPasswordPrompt('step2')">PROCEED HERE</span>.</p>
+  </div>
+
+  <div class="vault" id="vault2">
+    <p><strong>PREVIEW ONLY.<br />USE MAIN PLATFORM OR CONTACT YOUR LOCAL REPRESENTATIVE.</strong></p>
+    <div class="pdf-list">
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">MEMBER_REGULATIONS.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">SPONSORSHIP_APPLICATION-GUIDE.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">AUTHORIZED_PARTNER_LIST.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">RA06h45m08_DEC_-16d42m58_REPORT_2020_2025.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">monroe_inst_gateway_AO-22_fragment.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">investment_agenda_2020_2040.pdf</a>
+      <a href="#" onclick="event.preventDefault(); alert('404 Not Found');">FOUNDING_CHARTER_TRANSLATION_1776.pdf</a>
+    </div>
+  </div>
+
+  <div id="password-prompt" class="vault" style="display:none">
+    <p>Enter password:</p>
+    <input type="password" id="password-input" class="input" />
+    <br />
+    <button onclick="verifyPassword()" class="button">Submit</button>
+    <p id="error-msg" style="color: red; display: none;">ACCESS DENIED</p>
+  </div>
+
   <script>
-    function requestPassword() {
-      const pwd = prompt("Enter the password:");
-      if (pwd === "ILLUMINATI1776") {
-        window.location.href = "vault.html";
-      } else if (pwd !== null) {
-        alert("ACCESS DENIED");
+    let currentStep = '';
+
+    function showPasswordPrompt(step) {
+      currentStep = step;
+      document.getElementById('password-prompt').style.display = 'flex';
+      document.getElementById('vault1').style.display = 'none';
+      document.getElementById('vault2').style.display = 'none';
+      document.getElementById('error-msg').style.display = 'none';
+      document.getElementById('password-input').value = '';
+    }
+
+    function verifyPassword() {
+      const input = document.getElementById('password-input').value;
+      const error = document.getElementById('error-msg');
+
+      if (currentStep === 'step1' && input === 'ILLUMINATI1776') {
+        document.getElementById('vault1').style.display = 'flex';
+        document.getElementById('password-prompt').style.display = 'none';
+      } else if (currentStep === 'step2' && input === 'HORUS777') {
+        document.getElementById('vault2').style.display = 'flex';
+        document.getElementById('password-prompt').style.display = 'none';
+      } else {
+        error.style.display = 'block';
       }
     }
   </script>
