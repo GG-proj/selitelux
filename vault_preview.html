@@ -2,88 +2,182 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vault Preview</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vault Preview - S Elite Lux</title>
   <style>
     body {
       margin: 0;
-      padding: 40px 20px;
-      background-color: #0b0b0b;
-      color: #eee;
+      padding: 20px;
+      background-color: #0e0e0e;
+      color: #f0f0f0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+      min-height: 100vh;
+      text-align: center;
     }
     h1 {
-      text-align: center;
-      margin-bottom: 30px;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
     }
-    p.description {
-      text-align: center;
-      font-style: italic;
-      margin-bottom: 40px;
+    p {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+      font-style: normal;
     }
-    ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    li {
-      margin-bottom: 18px;
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    li span {
-      display: block;
-      font-weight: normal;
-      font-size: 0.9rem;
-      font-style: italic;
-      color: #aaa;
-    }
-    a {
-      color: #ccc;
-      text-decoration: none;
+    .secret-link {
       cursor: pointer;
-    }
-    a:hover {
+      color: #c59f35;
       text-decoration: underline;
-      color: #fff;
+    }
+    .secret-link:hover {
+      color: #a47f1f;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      max-width: 600px;
+      margin: 30px auto 0;
+      text-align: left;
+    }
+    ul li {
+      margin-bottom: 12px;
+    }
+    ul li a {
+      color: #f0f0f0;
+      text-decoration: none;
+      cursor: default; /* not clickable */
+    }
+    ul li a:hover {
+      text-decoration: underline;
+    }
+
+    /* Popup overlay */
+    #password-popup {
+      display: none; /* hidden by default */
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+    #password-popup.active {
+      display: flex;
+    }
+    #password-popup-content {
+      background: #1a1a1a;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #000;
+      width: 320px;
+      text-align: center;
+      color: #f0f0f0;
+      font-size: 1rem;
+      position: relative;
+    }
+    #password-popup-content input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+    }
+    #password-popup-content button {
+      margin-top: 20px;
+      background-color: #c59f35;
+      border: none;
+      padding: 10px 20px;
+      color: #0e0e0e;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    #password-popup-content button:hover {
+      background-color: #a47f1f;
+    }
+    #password-error {
+      color: #ff4444;
+      margin-top: 15px;
+      font-weight: bold;
+      display: none;
     }
   </style>
 </head>
 <body>
   <h1>Vault Preview</h1>
-  <p class="description">SOLA ANTEPRIMA DISPONIBILE. UTILIZZA PIATTAFORMA PRINCIPALE O CONTATTA REFERENTE DI ZONA.</p>
 
-  <ul>
-    <li>
-      <a href="non_esiste_1.pdf" target="_blank">MEMBER_REGULATIONS.pdf</a>
-      <span>Rules and guidelines for all members</span>
-    </li>
-    <li>
-      <a href="non_esiste_2.pdf" target="_blank">SPONSORSHIP_APPLICATION-GUIDE.pdf</a>
-      <span>How to propose a new member</span>
-    </li>
-    <li>
-      <a href="non_esiste_3.pdf" target="_blank">AUTHORIZED_PARTNER_LIST.pdf</a>
-      <span>List of authorized partners and contacts</span>
-    </li>
-    <li>
-      <a href="non_esiste_4.pdf" target="_blank">RA06h45m08_DEC_-16d42m58_REPORT_2020_2025.pdf</a>
-      <span>Coordinates: RA 06h 45m 08s | DEC -16° 42′ 58″ (Sirius)</span>
-    </li>
-    <li>
-      <a href="non_esiste_5.pdf" target="_blank">monroe_inst_gateway_AO-22_fragment.pdf</a>
-      <span>Classified fragment related to Monroe Institute and Project Gateway</span>
-    </li>
-    <li>
-      <a href="non_esiste_6.pdf" target="_blank">investment_agenda_2020_2040.pdf</a>
-      <span>Plans for investments and actions from 2020 to 2040</span>
-    </li>
-    <li>
-      <a href="non_esiste_7.pdf" target="_blank">FOUNDING_CHARTER_TRANSLATION_1776.pdf</a>
-      <span>Historical founding document, translation dated 1776</span>
-    </li>
+  <p>RESTRICTED AREA; IF YOU ARE A MEMBER, PLEASE CONTACT YOUR LOCAL REPRESENTATIVE OR PROCEED <span id="secretHere" class="secret-link">here</span>.</p>
+
+  <ul id="file-list" style="display:none;">
+    <li><a href="404.html" target="_blank">MEMBER_REGULATIONS.pdf</a></li>
+    <li><a href="404.html" target="_blank">SPONSORSHIP_APPLICATION-GUIDE.pdf</a></li>
+    <li><a href="404.html" target="_blank">AUTHORIZED_PARTNER_LIST.pdf</a></li>
+    <li><a href="404.html" target="_blank">RA06h45m08_DEC_-16d42m58_REPORT_2020_2025.pdf</a></li>
+    <li><a href="404.html" target="_blank">monroe_inst_gateway_AO-22_fragment.pdf</a></li>
+    <li><a href="404.html" target="_blank">investment_agenda_2020_2040.pdf</a></li>
+    <li><a href="404.html" target="_blank">FOUNDING_CHARTER_TRANSLATION_1776.pdf</a></li>
   </ul>
+
+  <!-- Password popup -->
+  <div id="password-popup">
+    <div id="password-popup-content">
+      <div>Enter Password</div>
+      <input type="password" id="password-input" autocomplete="off" />
+      <button id="password-submit">Submit</button>
+      <div id="password-error">ACCESS DENIED</div>
+    </div>
+  </div>
+
+  <script>
+    const secretHere = document.getElementById('secretHere');
+    const popup = document.getElementById('password-popup');
+    const passwordInput = document.getElementById('password-input');
+    const passwordSubmit = document.getElementById('password-submit');
+    const passwordError = document.getElementById('password-error');
+    const fileList = document.getElementById('file-list');
+
+    // Show popup only clicking "here"
+    secretHere.addEventListener('click', () => {
+      passwordInput.value = '';
+      passwordError.style.display = 'none';
+      fileList.style.display = 'none';
+      popup.classList.add('active');
+      passwordInput.focus();
+    });
+
+    // Close popup clicking outside content
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        popup.classList.remove('active');
+      }
+    });
+
+    // Submit password
+    passwordSubmit.addEventListener('click', () => {
+      const password = passwordInput.value.trim();
+      if (password === 'HORUS777') {
+        // Correct password: hide popup, show file list and preview message
+        popup.classList.remove('active');
+        fileList.style.display = 'block';
+
+        // Replace paragraph text with preview message
+        document.querySelector('p').textContent = 'PREVIEW ONLY AVAILABLE. USE MAIN PLATFORM OR CONTACT LOCAL REPRESENTATIVE.';
+      } else {
+        // Wrong password: show error
+        passwordError.style.display = 'block';
+      }
+    });
+
+    // Enter key submits password
+    passwordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        passwordSubmit.click();
+      }
+    });
+  </script>
 </body>
 </html>
