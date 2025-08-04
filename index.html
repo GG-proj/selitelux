@@ -1,248 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>S Elite Lux</title>
-<style>
-  body {
-    margin: 0; padding: 0;
-    background-color: #0e0e0e;
-    color: #f0f0f0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    min-height: 100vh;
-    text-align: center;
-  }
-  img.logo {
-    max-width: 200px;
-    margin-bottom: 30px;
-  }
-  h1 {
-    font-size: 2rem;
-    letter-spacing: 0.1em;
-  }
-  p {
-    max-width: 600px;
-    margin: 0 auto 20px;
-    line-height: 1.6;
-  }
-  .email {
-    color: #fff;
-    font-weight: bold;
-  }
-  footer {
-    margin-top: 40px;
-    font-size: 0.85rem;
-    color: #888;
-  }
-  a.link-like {
-    color: #79aaff;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  /* Popup overlay and box */
-  .popup-overlay {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(3px);
-    align-items: center;
-    justify-content: center;
-  }
-  .popup-box {
-    background: #121212;
-    padding: 25px 35px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px #222;
-    max-width: 350px;
-    width: 90%;
-    color: #ddd;
-  }
-  .popup-box input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 4px;
-    margin-top: 10px;
-  }
-  .popup-box button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background: #396afc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  .hidden { display:none; }
-  .pdf-list {
-    list-style: none;
-    padding: 0;
-    max-width: 500px;
-    margin: 20px auto 0;
-    text-align: left;
-    color: #aaa;
-  }
-  .pdf-list li {
-    margin: 8px 0;
-  }
-  .pdf-list a {
-    color: #79aaff;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .message {
-    font-weight: bold;
-    margin: 10px 0;
-    color: #cc6666;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>S Elite Lux</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0e0e0e;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    img.logo {
+      max-width: 200px;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 2rem;
+      letter-spacing: 0.1em;
+    }
+    p {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    .email {
+      color: #ffffff;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+    a.secret {
+      color: #f0f0f0;
+      text-decoration: underline dotted;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-
-<!-- Landing Page content -->
-<div id="landing-page">
   <img src="logo.png" alt="S Elite Lux logo" class="logo" />
   <h1>S Elite Lux</h1>
   <p><em>Provisional Identity</em></p>
-  <p>
-    A private circle for extraordinary individuals.<br />
-    Executives, investors, elite athletes, artists, and public figures —<br />
-    connected discreetly across borders.
-  </p>
-  <p>
-    This is a limited-access public presence, reserved for institutional partnership inquiries.
-  </p>
-  <p>
-    If you are a partner or a brand representative, you may contact us at:<br />
-    <span class="email">partnership@selitelux.com</span>
-  </p>
-  <p>
-    Membership is strictly by invitation.<br />
-    If we are interested in <span id="first-you">you</span>, we will find <span id="second-you" class="link-like">you</span>.
-  </p>
+
+  <p>A private circle for extraordinary individuals.<br />
+  Executives, investors, elite athletes, artists, and public figures —<br />
+  connected discreetly across borders.</p>
+
+  <p>This is a limited-access public presence, reserved for institutional partnership inquiries.</p>
+
+  <p>If you are a partner or a brand representative, you may contact us at:<br />
+  <span class="email">partnership@selitelux.com</span></p>
+
+  <p><strong>Membership is strictly by invitation.<br />
+  If we are interested in <a class="secret" onclick="requestPassword()">you</a>, we will find you.</strong></p>
+
   <footer>
     The official domain and platform are shared only with selected members.
   </footer>
-</div>
 
-<!-- Popup for first password -->
-<div id="popup1" class="popup-overlay">
-  <div class="popup-box">
-    <div>Insert Password:</div>
-    <input type="password" id="password1" autocomplete="off" />
-    <button id="submit1">Enter</button>
-    <div id="error1" class="message hidden">ACCESSO NEGATO</div>
-  </div>
-</div>
-
-<!-- Vault page -->
-<div id="vault-page" class="hidden">
-  <h1>AREA RISERVATA</h1>
-  <p>SE SEI UN SOCIO, CONTATTA IL TUO REFERENTE DI ZONA OPPURE <span id="vault-qui" class="link-like">PROCEDI QUI</span></p>
-</div>
-
-<!-- Popup for second password -->
-<div id="popup2" class="popup-overlay">
-  <div class="popup-box">
-    <div>Insert Password:</div>
-    <input type="password" id="password2" autocomplete="off" />
-    <button id="submit2">Enter</button>
-    <div id="error2" class="message hidden">ACCESSO NEGATO</div>
-  </div>
-</div>
-
-<!-- PDF List -->
-<div id="pdf-list-container" class="hidden">
-  <h2>SOLA ANTEPRIMA DISPONIBILE.<br />UTILIZZA PIATTAFORMA PRINCIPALE O CONTATTA REFERENTE DI ZONA</h2>
-  <ul class="pdf-list">
-    <li><a href="#" class="pdf-link">MEMBER_REGULATIONS.pdf</a></li>
-    <li><a href="#" class="pdf-link">SPONSORSHIP_APPLICATION-GUIDE.pdf</a></li>
-    <li><a href="#" class="pdf-link">AUTHORIZED_PARTNER_LIST.pdf</a></li>
-    <li><a href="#" class="pdf-link">RA06h45m08_DEC_-16d42m58_REPORT_2020_2025.pdf</a></li>
-    <li><a href="#" class="pdf-link">monroe_inst_gateway_AO-22_fragment.pdf</a></li>
-    <li><a href="#" class="pdf-link">investment_agenda_2020_2040.pdf</a></li>
-    <li><a href="#" class="pdf-link">FOUNDING_CHARTER_TRANSLATION_1776.pdf</a></li>
-  </ul>
-</div>
-
-<!-- Popup for PDF error -->
-<div id="pdf-error-popup" class="popup-overlay">
-  <div class="popup-box">
-    <h2>Access Denied</h2>
-    <p>This file is not available for download.<br />Please contact your regional representative.</p>
-    <button id="close-error">Close</button>
-  </div>
-</div>
-
-<script>
-  const firstYou = document.getElementById('second-you'); // second "you"
-  const popup1 = document.getElementById('popup1');
-  const submit1 = document.getElementById('submit1');
-  const password1Input = document.getElementById('password1');
-  const error1 = document.getElementById('error1');
-  
-  const vaultPage = document.getElementById('vault-page');
-  const landingPage = document.getElementById('landing-page');
-  
-  const vaultQui = document.getElementById('vault-qui');
-  const popup2 = document.getElementById('popup2');
-  const submit2 = document.getElementById('submit2');
-  const password2Input = document.getElementById('password2');
-  const error2 = document.getElementById('error2');
-  
-  const pdfListContainer = document.getElementById('pdf-list-container');
-  
-  const pdfLinks = document.querySelectorAll('.pdf-link');
-  const pdfErrorPopup = document.getElementById('pdf-error-popup');
-  const closeErrorBtn = document.getElementById('close-error');
-  
-  // Show popup 1 when clicking second "you"
-  firstYou.addEventListener('click', () => {
-    password1Input.value = '';
-    error1.classList.add('hidden');
-    popup1.style.display = 'flex';
-    password1Input.focus();
-  });
-  
-  // Submit password 1
-  submit1.addEventListener('click', () => {
-    if (password1Input.value === 'ILLUMINATI1776') {
-      popup1.style.display = 'none';
-      landingPage.style.display = 'none';
-      vaultPage.classList.remove('hidden');
-    } else {
-      error1.classList.remove('hidden');
+  <script>
+    function requestPassword() {
+      const pwd = prompt("Enter the password:");
+      if (pwd === "ILLUMINATI1776") {
+        window.location.href = "vault.html";
+      } else if (pwd !== null) {
+        alert("ACCESS DENIED");
+      }
     }
-  });
-  
-  // Show popup 2 when clicking "QUI"
-  vaultQui.addEventListener('click', () => {
-    password2Input.value = '';
-    error2.classList.add('hidden');
-    popup2.style.display = 'flex';
-    password2Input.focus();
-  });
-  
-  // Submit password 2
-  submit2.addEventListener('click', () => {
-    if (password2Input.value === 'HORUS777') {
-      popup2.style.display = 'none';
-      vaultPage.style.display = 'none';
-      pdfListContainer.classList.remove('hidden');
-    } else {
-      error2.classList.remove('hidden');
-    }
-  });
-  
-  // PDF links open error popup
-  pdfLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      pdfError
+  </script>
+</body>
+</html>
