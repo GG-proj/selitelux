@@ -1,125 +1,54 @@
+<!-- vault.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vault Access</title>
+  <meta charset="UTF-8">
+  <title>Vault</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0b0b0b;
-      color: #f0f0f0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
-
-    p {
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .secret-link {
-      color: inherit;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-content {
-      background-color: #1a1a1a;
-      padding: 30px;
-      border-radius: 8px;
-      text-align: center;
-      box-shadow: 0 0 10px #000;
-    }
-
-    .modal-content input {
-      padding: 10px;
-      margin-top: 15px;
-      font-size: 1rem;
-      border-radius: 4px;
-      border: none;
-      outline: none;
-      width: 200px;
-    }
-
-    .modal-content button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: #444;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .error {
-      color: #ff4444;
-      margin-top: 10px;
-    }
+    body { background: #000; color: #fff; font-family: Georgia, serif; text-align: center; padding: 100px; }
+    .popup { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+    .popup-content { background: #111; padding: 30px; border: 2px solid #555; }
+    .hidden-link { cursor: pointer; color: inherit; text-decoration: none; }
+    .popup input[type="password"] { padding: 10px; font-size: 16px; }
+    .popup button { padding: 10px 20px; margin-left: 10px; font-size: 16px; }
   </style>
 </head>
 <body>
-  <h1>RESTRICTED AREA</h1>
-  <p>If you are a member, contact your local liaison or proceed <span class="secret-link" onclick="openModal()">here</span>.</p>
+  <h2>RESTRICTED AREA</h2>
+  <p>IF YOU ARE A MEMBER, CONTACT YOUR LOCAL REFERENT OR PROCEED <span id="secondSecret" class="hidden-link">HERE</span>.</p>
 
-  <!-- Modal -->
-  <div id="passwordModal" class="modal">
-    <div class="modal-content">
-      <h3>Enter password</h3>
-      <input type="password" id="passwordInput" placeholder="Password" />
-      <br />
-      <button onclick="checkPassword()">Submit</button>
-      <p class="error" id="errorMessage" style="display:none;">ACCESS DENIED</p>
+  <div class="popup" id="secondPopup">
+    <div class="popup-content">
+      <p>Enter password:</p>
+      <input type="password" id="secondPassword" />
+      <button onclick="checkSecondPassword()">Submit</button>
+      <p id="secondError" style="color:red;"></p>
     </div>
   </div>
 
   <script>
-    function openModal() {
-      document.getElementById('passwordModal').style.display = 'flex';
-    }
+    const secondTrigger = document.getElementById("secondSecret");
+    const secondPopup = document.getElementById("secondPopup");
+    const secondInput = document.getElementById("secondPassword");
+    const secondError = document.getElementById("secondError");
 
-    function checkPassword() {
-      const input = document.getElementById('passwordInput').value;
-      if (input === 'HORUS777') {
-        window.location.href = 'vault_preview.html';
+    secondTrigger.addEventListener("click", () => {
+      secondPopup.style.display = "flex";
+      secondInput.value = "";
+      secondError.textContent = "";
+    });
+
+    function checkSecondPassword() {
+      if (secondInput.value === "HORUS777") {
+        window.location.href = "vault_preview.html";
       } else {
-        document.getElementById('errorMessage').style.display = 'block';
+        secondError.textContent = "ACCESS DENIED";
       }
     }
 
-    window.onclick = function(event) {
-      const modal = document.getElementById('passwordModal');
-      if (event.target === modal) {
-        modal.style.display = "none";
-        document.getElementById('errorMessage').style.display = 'none';
-        document.getElementById('passwordInput').value = '';
-      }
-    }
+    secondPopup.addEventListener("click", (e) => {
+      if (e.target === secondPopup) secondPopup.style.display = "none";
+    });
   </script>
 </body>
 </html>
