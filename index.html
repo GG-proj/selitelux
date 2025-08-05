@@ -2,115 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Selitelux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S Elite Lux</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background-color: #000;
-      color: #fff;
-      font-family: "Georgia", serif;
+      background-color: #0e0e0e;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
+      justify-content: center;
+      min-height: 100vh;
       text-align: center;
     }
-    img {
-      width: 120px;
-      margin-bottom: 40px;
+    img.logo {
+      max-width: 200px;
+      margin-bottom: 30px;
     }
     h1 {
-      font-size: 1.5rem;
-      line-height: 1.8;
-      max-width: 90%;
+      font-size: 2rem;
+      letter-spacing: 0.1em;
     }
-    .clickable {
+    p {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    .email {
+      color: #ffffff;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+    /* Stile per la parola cliccabile 'you' */
+    span.clickable-you {
       cursor: pointer;
-      color: inherit;
+      color: #f0f0f0;
+      text-decoration: none; /* niente sottolineatura */
     }
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
+    span.clickable-you:hover {
+      color: #ccc;
+    }
+
+    /* Popup overlay */
+    #passwordPopup {
       display: none;
-      justify-content: center;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 9999;
+      display: flex;
       align-items: center;
-      z-index: 1000;
+      justify-content: center;
     }
-    .modal-content {
-      background: #111;
+    #passwordPopup .popup-content {
+      background-color: #222;
       padding: 30px;
-      border: 1px solid #666;
       border-radius: 8px;
       text-align: center;
+      width: 300px;
+      box-shadow: 0 0 15px #111;
     }
-    input[type="password"] {
-      padding: 10px;
+    #passwordPopup input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      margin: 15px 0;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    #passwordPopup button {
+      background-color: #444;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
       font-size: 1rem;
       width: 100%;
-      margin-bottom: 20px;
-      background: #000;
-      color: #fff;
-      border: 1px solid #444;
     }
-    button {
-      padding: 10px 20px;
-      background: #444;
-      color: #fff;
-      border: none;
-      cursor: pointer;
+    #passwordPopup button:hover {
+      background-color: #666;
+    }
+    #passwordError {
+      color: #e33;
+      margin-top: 10px;
+      font-weight: bold;
+      min-height: 1.2em;
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Selitelux Logo" />
-  <h1>
-    Membership is strictly by invitation.<br />
-    If we are interested in you, we will find <span class="clickable" id="secret-link">you</span>.
-  </h1>
 
-  <div class="modal" id="password-modal">
-    <div class="modal-content">
-      <p>Enter password:</p>
-      <input type="password" id="password-input" placeholder="Password" />
-      <br />
-      <button onclick="checkPassword()">Submit</button>
-      <p id="error-message" style="color: red; display: none;">ACCESS DENIED</p>
+  <img src="logo.png" alt="S Elite Lux logo" class="logo" />
+  <h1>S Elite Lux</h1>
+  <p><em>Provisional Identity</em></p>
+
+  <p>A private circle for extraordinary individuals.<br />
+  Executives, investors, elite athletes, artists, and public figures —<br />
+  connected discreetly across borders.</p>
+
+  <p>This is a limited-access public presence, reserved for institutional partnership inquiries.</p>
+
+  <p>If you are a partner or a brand representative, you may contact us at:<br />
+  <span class="email">partnership@selitelux.com</span></p>
+
+  <p><strong>Membership is strictly by invitation.<br />
+  If we are interested in <span>you</span>, we will find <span class="clickable-you">you</span>.</strong></p>
+
+  <footer>
+    The official domain and platform are shared only with selected members.
+  </footer>
+
+  <!-- POPUP PASSWORD -->
+  <div id="passwordPopup">
+    <div class="popup-content">
+      <h2>Enter Password</h2>
+      <form id="passwordForm">
+        <input type="password" id="passwordInput" placeholder="Enter password" autocomplete="off" required />
+        <button type="submit">Submit</button>
+      </form>
+      <div id="passwordError"></div>
     </div>
   </div>
 
   <script>
-    const secretLink = document.getElementById("secret-link");
-    const modal = document.getElementById("password-modal");
-    const input = document.getElementById("password-input");
-    const error = document.getElementById("error-message");
+    const clickableYou = document.querySelector('.clickable-you');
+    const passwordPopup = document.getElementById('passwordPopup');
+    const passwordForm = document.getElementById('passwordForm');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordError = document.getElementById('passwordError');
 
-    secretLink.addEventListener("click", () => {
-      modal.style.display = "flex";
-      input.value = "";
-      error.style.display = "none";
-      input.focus();
+    clickableYou.addEventListener('click', () => {
+      passwordError.textContent = '';
+      passwordInput.value = '';
+      passwordPopup.style.display = 'flex';
+      passwordInput.focus();
     });
 
-    window.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
-    });
-
-    function checkPassword() {
-      if (input.value === "ILLUMINATI1776") {
-        window.location.href = "vault.html";
+    passwordForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entered = passwordInput.value.trim();
+      if (entered === 'ILLUMINATI1776') {
+        passwordPopup.style.display = 'none';
+        // Redirect to vault.html on success
+        window.location.href = 'vault.html';
       } else {
-        error.style.display = "block";
+        passwordError.textContent = 'ACCESS DENIED';
       }
-    }
+    });
+
+    // Allow closing popup clicking outside or pressing ESC
+    passwordPopup.addEventListener('click', (e) => {
+      if (e.target === passwordPopup) {
+        passwordPopup.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === "Escape" && passwordPopup.style.display === 'flex') {
+        passwordPopup.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
