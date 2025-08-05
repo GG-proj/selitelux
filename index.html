@@ -1,184 +1,55 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>S Elite Lux</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeliteLux</title>
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0e0e0e;
-      color: #f0f0f0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-    img.logo {
-      max-width: 200px;
-      margin-bottom: 30px;
-    }
-    h1 {
-      font-size: 2rem;
-      letter-spacing: 0.1em;
-    }
-    p {
-      max-width: 600px;
-      margin: 0 auto 20px;
-      line-height: 1.6;
-    }
-    .email {
-      color: #ffffff;
-      font-weight: bold;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.85rem;
-      color: #888;
-    }
-    /* Link "you" cliccabile senza stile visibile */
-    .secret-link {
-      cursor: pointer;
-      color: inherit;
-      text-decoration: none;
-    }
-    .secret-link:focus, .secret-link:hover {
-      text-decoration: none;
-      outline: none;
-      color: inherit;
-    }
-
-    /* Popup overlay */
-    #password-popup {
-      display: none; /* hidden by default */
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.75);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-    }
-    #password-popup.active {
-      display: flex;
-    }
-    #password-popup-content {
-      background: #1a1a1a;
-      padding: 30px 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 20px #000;
-      width: 320px;
-      text-align: center;
-      color: #f0f0f0;
-      font-size: 1rem;
-      position: relative;
-    }
-    #password-popup-content input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 15px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 5px;
-    }
-    #password-popup-content button {
-      margin-top: 20px;
-      background-color: #c59f35;
-      border: none;
-      padding: 10px 20px;
-      color: #0e0e0e;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-    #password-popup-content button:hover {
-      background-color: #a47f1f;
-    }
-    #password-error {
-      color: #ff4444;
-      margin-top: 15px;
-      font-weight: bold;
-      display: none;
-    }
+    body { margin: 0; font-family: 'Georgia', serif; background-color: #000; color: #fff; text-align: center; padding: 50px; }
+    .popup { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+    .popup-content { background: #111; padding: 30px; border: 2px solid #555; }
+    .hidden-link { cursor: pointer; color: inherit; text-decoration: none; }
+    .popup input[type="password"] { padding: 10px; font-size: 16px; }
+    .popup button { padding: 10px 20px; margin-left: 10px; font-size: 16px; }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="S Elite Lux logo" class="logo" />
-  <h1>S Elite Lux</h1>
-  <p><em>Provisional Identity</em></p>
+  <h1>Membership is strictly by invitation.<br>
+  If we are interested in <span>you</span>, we will find <span id="secretTrigger" class="hidden-link">you</span>.</h1>
 
-  <p>A private circle for extraordinary individuals.<br />
-  Executives, investors, elite athletes, artists, and public figures —<br />
-  connected discreetly across borders.</p>
-
-  <p>This is a limited-access public presence, reserved for institutional partnership inquiries.</p>
-
-  <p>If you are a partner or a brand representative, you may contact us at:<br />
-  <span class="email">partnership@selitelux.com</span></p>
-
-  <p><strong>Membership is strictly by invitation.<br />
-  If we are interested in 
-    you, we will find 
-    <span id="secretYou" class="secret-link">you</span>.
-  </strong></p>
-
-  <footer>
-    The official domain and platform are shared only with selected members.
-  </footer>
-
-  <!-- Password popup -->
-  <div id="password-popup">
-    <div id="password-popup-content">
-      <div>Enter Password</div>
-      <input type="password" id="password-input" autocomplete="off" />
-      <button id="password-submit">Submit</button>
-      <div id="password-error">ACCESS DENIED</div>
+  <div class="popup" id="passwordPopup">
+    <div class="popup-content">
+      <p>Enter password:</p>
+      <input type="password" id="passwordInput" />
+      <button onclick="checkPassword()">Submit</button>
+      <p id="errorMsg" style="color:red;"></p>
     </div>
   </div>
 
   <script>
-    const secretYou = document.getElementById('secretYou');
-    const popup = document.getElementById('password-popup');
-    const passwordInput = document.getElementById('password-input');
-    const passwordSubmit = document.getElementById('password-submit');
-    const passwordError = document.getElementById('password-error');
+    const trigger = document.getElementById("secretTrigger");
+    const popup = document.getElementById("passwordPopup");
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("errorMsg");
 
-    // Show popup on clicking second "you"
-    secretYou.addEventListener('click', () => {
-      passwordInput.value = '';
-      passwordError.style.display = 'none';
-      popup.classList.add('active');
-      passwordInput.focus();
+    trigger.addEventListener("click", () => {
+      popup.style.display = "flex";
+      input.value = "";
+      error.textContent = "";
     });
 
-    // Close popup clicking outside content
-    popup.addEventListener('click', (e) => {
-      if (e.target === popup) {
-        popup.classList.remove('active');
-      }
-    });
-
-    // Submit password
-    passwordSubmit.addEventListener('click', () => {
-      const password = passwordInput.value.trim();
-      if (password === 'ILLUMINATI1776') {
-        // Correct password: redirect to vault.html
-        window.location.href = 'vault.html';
+    function checkPassword() {
+      if (input.value === "ILLUMINATI1776") {
+        window.location.href = "vault.html";
       } else {
-        // Wrong password: show error
-        passwordError.style.display = 'block';
+        error.textContent = "ACCESS DENIED";
       }
-    });
+    }
 
-    // Optional: Enter key submits
-    passwordInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        passwordSubmit.click();
-      }
+    // Close popup if clicked outside content
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.style.display = "none";
     });
   </script>
 </body>
