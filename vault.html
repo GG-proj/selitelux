@@ -1,53 +1,120 @@
-<!-- vault.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vault</title>
   <style>
-    body { background: #000; color: #fff; font-family: Georgia, serif; text-align: center; padding: 100px; }
-    .popup { display: none; position: fixed; z-index: 999; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-    .popup-content { background: #111; padding: 30px; border: 2px solid #555; }
-    .hidden-link { cursor: pointer; color: inherit; text-decoration: none; }
-    .popup input[type="password"] { padding: 10px; font-size: 16px; }
-    .popup button { padding: 10px 20px; margin-left: 10px; font-size: 16px; }
+    body {
+      background-color: #111;
+      color: #f0f0f0;
+      font-family: 'Georgia', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #passwordPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      padding: 2rem;
+      border: 1px solid #444;
+      z-index: 1000;
+    }
+
+    input[type="password"] {
+      padding: 0.5rem;
+      margin-top: 1rem;
+      border: 1px solid #555;
+      background-color: #000;
+      color: #fff;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: gold;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    a {
+      color: gold;
+      cursor: pointer;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 999;
+    }
   </style>
 </head>
 <body>
-  <h2>RESTRICTED AREA</h2>
-  <p>IF YOU ARE A MEMBER, CONTACT YOUR LOCAL REFERENT OR PROCEED <span id="secondSecret" class="hidden-link">HERE</span>.</p>
 
-  <div class="popup" id="secondPopup">
-    <div class="popup-content">
-      <p>Enter password:</p>
-      <input type="password" id="secondPassword" />
-      <button onclick="checkSecondPassword()">Submit</button>
-      <p id="secondError" style="color:red;"></p>
-    </div>
+  <h1>RESTRICTED AREA</h1>
+  <p>If you are a member, contact your regional referent or proceed <a id="openSecondVault" style="text-decoration: underline;">HERE</a>.</p>
+
+  <!-- Password Popup -->
+  <div id="overlay" class="hidden"></div>
+  <div id="passwordPopup" class="hidden">
+    <p>Enter the password</p>
+    <input type="password" id="passwordInput" placeholder="Password" />
+    <button id="submitPassword">Submit</button>
+    <p id="errorMessage" style="color: red; display: none;">ACCESS DENIED</p>
   </div>
 
   <script>
-    const secondTrigger = document.getElementById("secondSecret");
-    const secondPopup = document.getElementById("secondPopup");
-    const secondInput = document.getElementById("secondPassword");
-    const secondError = document.getElementById("secondError");
+    const openBtn = document.getElementById("openSecondVault");
+    const popup = document.getElementById("passwordPopup");
+    const overlay = document.getElementById("overlay");
+    const input = document.getElementById("passwordInput");
+    const submit = document.getElementById("submitPassword");
+    const errorMsg = document.getElementById("errorMessage");
 
-    secondTrigger.addEventListener("click", () => {
-      secondPopup.style.display = "flex";
-      secondInput.value = "";
-      secondError.textContent = "";
+    openBtn.addEventListener("click", () => {
+      popup.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+      input.focus();
     });
 
-    function checkSecondPassword() {
-      if (secondInput.value === "HORUS777") {
+    overlay.addEventListener("click", () => {
+      popup.classList.add("hidden");
+      overlay.classList.add("hidden");
+      errorMsg.style.display = "none";
+      input.value = "";
+    });
+
+    submit.addEventListener("click", () => {
+      if (input.value === "HORUS777") {
         window.location.href = "vault_preview.html";
       } else {
-        secondError.textContent = "ACCESS DENIED";
+        errorMsg.style.display = "block";
       }
-    }
+    });
 
-    secondPopup.addEventListener("click", (e) => {
-      if (e.target === secondPopup) secondPopup.style.display = "none";
+    // Allow Enter key to submit
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        submit.click();
+      }
     });
   </script>
 </body>
